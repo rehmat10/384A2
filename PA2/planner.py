@@ -1,5 +1,5 @@
-#Look for ### IMPLEMENT BELOW ### tags in this file. These tags indicate what has
-#to be implemented to complete the warehouse domain.
+# Look for ### IMPLEMENT BELOW ### tags in this file. These tags indicate what has
+# to be implemented to complete the warehouse domain.
 
 #   You may add only standard python imports---i.e., ones that are automatically
 #   available on TEACH.CS
@@ -8,34 +8,34 @@
 
 import os
 # Search engines
-from search import * 
+from search import *
 # Warehouse specific classes
 from warehouse import WarehouseState, Direction, warehouse_goal_state
 
+
 def heur_displaced(state):
-  '''A trivial example heuristic that is admissible'''
-  '''INPUT: a warehouse state'''
-  '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
-  '''In this case, simply the number of displaced boxes.'''   
-  count = 0
-  for box in state.boxes:
-    if box not in state.storage:
-      count += 1
-    return count
+    '''A trivial example heuristic that is admissible'''
+    '''INPUT: a warehouse state'''
+    '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
+    '''In this case, simply the number of displaced boxes.'''
+    count = 0
+    for box in state.boxes:
+        if box not in state.storage:
+            count += 1
+        return count
+
 
 def heur_manhattan_distance(state):
-
     '''admissible heuristic: manhattan distance'''
     '''INPUT: a warehouse state'''
     '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
-    
-    #We want an admissible heuristic, which is an optimistic heuristic. 
-    #It must always underestimate the cost to get from the current state to the goal.
-    #The sum Manhattan distance of the boxes to their closest storage spaces is such a heuristic.  
-    #When calculating distances, assume there are no obstacles on the grid and that several boxes can fit in one storage bin.
-    #You should implement this heuristic function exactly, even if it is tempting to improve it.
-    #Your function should return a numeric value; this is the estimate of the distance to the goal.
 
+    # We want an admissible heuristic, which is an optimistic heuristic.
+    # It must always underestimate the cost to get from the current state to the goal.
+    # The sum Manhattan distance of the boxes to their closest storage spaces is such a heuristic.
+    # When calculating distances, assume there are no obstacles on the grid and that several boxes can fit in one storage bin.
+    # You should implement this heuristic function exactly, even if it is tempting to improve it.
+    # Your function should return a numeric value; this is the estimate of the distance to the goal.
 
     ### IMPLEMENT BELOW ###
     sum = 0
@@ -48,12 +48,12 @@ def heur_manhattan_distance(state):
                     min_dist = temp
             sum += min_dist
     ### END OF IMPLEMENTATION ###
-    
+
     return sum
 
 
-def fval_fn(state, weight, heuristic):
-    return state.gval + (1/weight - 1) * heuristic(state)
+def fval_fn(node, weight, heuristic):
+    return node.gval + (1 / weight - 1) * heuristic(node.state)
 
 
 def general_goal_fn(state):
@@ -68,8 +68,7 @@ def general_goal_fn(state):
     return True
 
 
-def weighted_astar(initial_state, heuristic, weight, timebound = 10):
-
+def weighted_astar(initial_state, heuristic, weight, timebound=10):
     '''Provides an implementation of weighted a-star, as described in the PA2 handout'''
     '''INPUT: a warehouse state that represents the start state, the heursitic to be used,'''
     '''       weight for the A* search (w >= 1), and a timebound (number of seconds)'''
@@ -81,15 +80,12 @@ def weighted_astar(initial_state, heuristic, weight, timebound = 10):
     return search_eng.search(timebound)[0]
 
 
-
-
-def iterative_astar(initial_state, heuristic, weight, timebound = 10):
-
+def iterative_astar(initial_state, heuristic, weight, timebound=10):
     '''Provides an implementation of iterative a-star, as described in the PA2 handout'''
     '''INPUT: a warehouse state that represents the start state, the heursitic to be used,'''
     '''       weight for the A* search (w >= 1), and a timebound (number of seconds)'''
     '''OUTPUT: A WarehouseState (if a goal is found), else False'''
-    
+
     # HINT: Use os.times()[0] to obtain the clock time. Your code should finish within the timebound.'''
     init_time = os.times()[0]
     decrement = weight / 10
@@ -98,7 +94,7 @@ def iterative_astar(initial_state, heuristic, weight, timebound = 10):
     time_left = timebound
     while time_left > 0 and cur_weight >= 0:
         search_eng = SearchEngine('custom', 'default')
-        wrap_fval_fn = (lambda state: fval_fn(state, cur_weight, heuristic))
+        wrap_fval_fn = (lambda sN: fval_fn(sN, cur_weight, heuristic))
         search_eng.init_search(initial_state, general_goal_fn, heuristic, wrap_fval_fn)
         result = search_eng.search(time_left)[0]
         if not result:
@@ -118,13 +114,12 @@ def iterative_astar(initial_state, heuristic, weight, timebound = 10):
 
 
 def heur_alternate(state):
-
     '''a better warehouse heuristic'''
     '''INPUT: a warehouse state'''
-    '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''        
-  
-    #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
-    #Your function should return a numeric value for the estimate of the distance to the goal.
+    '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
+
+    # Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
+    # Your function should return a numeric value for the estimate of the distance to the goal.
 
     sum = 0
     for box in state.boxes:
@@ -135,7 +130,7 @@ def heur_alternate(state):
                 if min_dist == -1 or temp < min_dist:
                     min_dist = temp
 
-            #cost for closest robot to get to box
+            # cost for closest robot to get to box
             close_robot_dist = -1
             for robot in state.robots:
                 temp = abs(box[0] - robot[0]) + abs(box[1] - robot[1])
