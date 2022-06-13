@@ -55,9 +55,6 @@ def heur_manhattan_distance(state):
 def fval_fn(node, weight):
     return node.gval + (1 / weight - 1) * node.hval
 
-
-
-
 def weighted_astar(initial_state, heuristic, weight, timebound=10):
     '''Provides an implementation of weighted a-star, as described in the PA2 handout'''
     '''INPUT: a warehouse state that represents the start state, the heursitic to be used,'''
@@ -68,7 +65,7 @@ def weighted_astar(initial_state, heuristic, weight, timebound=10):
     wrap_fval_fn = (lambda sN: fval_fn(sN, weight))
     search_eng.init_search(initial_state, warehouse_goal_state, heuristic, wrap_fval_fn)
 
-    return search_eng.search(timebound)[0]
+    return search_eng.search()[0]
 
 
 def iterative_astar(initial_state, heuristic, weight, timebound=10):
