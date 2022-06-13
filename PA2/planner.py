@@ -52,8 +52,8 @@ def heur_manhattan_distance(state):
     return sum
 
 
-def fval_fn(node, weight, heuristic):
-    return node.gval + (1 / weight - 1) * heuristic(node.state)
+def fval_fn(node, weight):
+    return node.gval + (1 / weight - 1) * node.hval
 
 
 def general_goal_fn(state):
@@ -75,7 +75,7 @@ def weighted_astar(initial_state, heuristic, weight, timebound=10):
     '''OUTPUT: A WarehouseState (if a goal is found), else False'''
 
     search_eng = SearchEngine('custom', 'default')
-    wrap_fval_fn = (lambda sN: fval_fn(sN, weight, heuristic))
+    wrap_fval_fn = (lambda sN: fval_fn(sN, weight))
     search_eng.init_search(initial_state, general_goal_fn, heuristic, wrap_fval_fn)
     return search_eng.search(timebound)[0]
 
