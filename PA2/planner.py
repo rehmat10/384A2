@@ -53,7 +53,7 @@ def heur_manhattan_distance(state):
 
 
 def fval_fn(node, weight):
-    return node.gval + (1 / weight - 1) * node.hval
+    return node.gval + weight * node.hval
 
 def weighted_astar(initial_state, heuristic, weight, timebound=10):
     '''Provides an implementation of weighted a-star, as described in the PA2 handout'''
