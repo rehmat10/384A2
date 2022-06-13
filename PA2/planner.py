@@ -65,7 +65,7 @@ def weighted_astar(initial_state, heuristic, weight, timebound=10):
     wrap_fval_fn = (lambda sN: fval_fn(sN, weight))
     search_eng.init_search(initial_state, warehouse_goal_state, heuristic, wrap_fval_fn)
 
-    return search_eng.search()[0]
+    return search_eng.search(timebound)[0]
 
 
 def iterative_astar(initial_state, heuristic, weight, timebound=10):
