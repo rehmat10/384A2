@@ -75,8 +75,10 @@ def weighted_astar(initial_state, heuristic, weight, timebound=10):
     '''OUTPUT: A WarehouseState (if a goal is found), else False'''
 
     search_eng = SearchEngine('custom', 'default')
+    search_eng.trace_on()
     wrap_fval_fn = (lambda sN: fval_fn(sN, weight))
     search_eng.init_search(initial_state, general_goal_fn, heuristic, wrap_fval_fn)
+
     return search_eng.search(timebound)[0]
 
 
@@ -94,7 +96,7 @@ def iterative_astar(initial_state, heuristic, weight, timebound=10):
     time_left = timebound
     while time_left > 0 and cur_weight > 0:
         search_eng = SearchEngine('custom', 'default')
-        wrap_fval_fn = (lambda sN: fval_fn(sN, cur_weight, heuristic))
+        wrap_fval_fn = (lambda sN: fval_fn(sN, cur_weight))
         search_eng.init_search(initial_state, general_goal_fn, heuristic, wrap_fval_fn)
         result = search_eng.search(time_left)[0]
         if not result:
