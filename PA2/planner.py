@@ -86,7 +86,9 @@ def iterative_astar(initial_state, heuristic, weight, timebound=10):
         search_eng.init_search(initial_state, warehouse_goal_state, heuristic, wrap_fval_fn)
         result = search_eng.search(time_left)[0]
         if not result:
-            return result
+            if best_cost is None:
+                return result
+            return best_cost
         cur_time = os.times()[0]
         if best_cost is None or best_cost.gval > result.gval:
             best_cost = result
