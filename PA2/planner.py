@@ -80,7 +80,7 @@ def iterative_astar(initial_state, heuristic, weight, timebound=10):
     best_cost = None
     cur_weight = weight
     time_left = timebound
-    while time_left > 0 and cur_weight > 0:
+    while time_left > 0 and cur_weight >= 0:
         search_eng = SearchEngine('custom', 'default')
         wrap_fval_fn = (lambda sN: fval_fn(sN, cur_weight))
         search_eng.init_search(initial_state, warehouse_goal_state, heuristic, wrap_fval_fn)
